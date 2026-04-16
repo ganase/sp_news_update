@@ -1,0 +1,90 @@
+# ============================================================
+# sp_news_update 設定ファイル
+# ここを編集して各種設定を変更してください
+# ============================================================
+
+# --- AI設定 ---
+ai:
+  endpoint: "https://api-opensource-ai.mde.rakuten-it.com"
+  api_key: "YOUR_API_KEY_HERE"          # 実際のAPIキーに変更してください
+  model: "rakutenai-2.0"
+  max_tokens: 4096
+  temperature: 0.3
+
+# --- メール設定 ---
+mail:
+  smtp_host: "smtp.rakuten.co.jp"       # 実際のSMTPホストに変更してください
+  smtp_port: 587
+  smtp_user: "YOUR_EMAIL@rakuten.com"   # 送信元メールアドレスに変更してください
+  smtp_password: "YOUR_SMTP_PASSWORD"   # SMTPパスワードに変更してください
+  use_tls: true
+  from_address: "YOUR_EMAIL@rakuten.com"
+  from_name: "SP News Update"
+  to_address: "YOUR_MAILING_LIST@rakuten.com"  # 配信先メーリングリストに変更してください
+
+# --- スケジュール設定 ---
+schedule:
+  day_of_week: "monday"   # 実行曜日
+  hour: 8                 # 実行時刻（時）
+  minute: 0               # 実行時刻（分）
+
+# --- 収集設定 ---
+collection:
+  max_articles_per_domain: 10  # ドメインごとの最大記事数
+  fetch_timeout_seconds: 10    # フェッチタイムアウト（秒）
+  days_lookback: 7             # 何日前までの記事を収集するか
+
+# --- 配信ドメイン設定 ---
+# active: true にすると配信対象になります
+# prompt_file: prompts/ 配下のプロンプトファイル名
+domains:
+  - id: "security"
+    name: "セキュリティ"
+    active: true
+    prompt_file: "security.yaml"
+    sources:
+      - name: "JPCERT"
+        url: "https://www.jpcert.or.jp/rss/jpcert.rdf"
+        type: "rss"
+      - name: "IPA 重要なセキュリティ情報"
+        url: "https://www.ipa.go.jp/security/rss/alert.rdf"
+        type: "rss"
+      - name: "Threatpost"
+        url: "https://threatpost.com/feed/"
+        type: "rss"
+      - name: "The Hacker News"
+        url: "https://feeds.feedburner.com/TheHackersNews"
+        type: "rss"
+
+  - id: "ai_data"
+    name: "AI・DATA"
+    active: true
+    prompt_file: "ai_data.yaml"
+    sources:
+      - name: "MIT Technology Review AI"
+        url: "https://www.technologyreview.com/feed/"
+        type: "rss"
+      - name: "VentureBeat AI"
+        url: "https://venturebeat.com/category/ai/feed/"
+        type: "rss"
+      - name: "Google AI Blog"
+        url: "https://blog.research.google/feeds/posts/default"
+        type: "rss"
+      - name: "OpenAI Blog"
+        url: "https://openai.com/blog/rss.xml"
+        type: "rss"
+
+  - id: "helpdesk"
+    name: "ヘルプデスク"
+    active: true
+    prompt_file: "helpdesk.yaml"
+    sources:
+      - name: "ServiceNow Blog"
+        url: "https://www.servicenow.com/blogs.rss"
+        type: "rss"
+      - name: "HDI Japan"
+        url: "https://hdijapan.org/feed/"
+        type: "rss"
+      - name: "ITmedia エンタープライズ"
+        url: "https://rss.itmedia.co.jp/rss/2.0/itmediaenterprise.xml"
+        type: "rss"
