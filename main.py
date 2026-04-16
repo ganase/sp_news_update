@@ -14,7 +14,7 @@ from pathlib import Path
 import yaml
 
 from collectors.rss_collector import fetch_rss_articles
-from writer.ai_writer import AIWriter
+from writer.ai_writer import create_writer_from_config
 from mailer.sender import MailSender, build_email_html
 
 # ログ設定
@@ -70,14 +70,9 @@ def run(dry_run: bool = False):
     collection_cfg = config["collection"]
     domains_cfg = config["domains"]
 
-    # AI ライター初期化
-    writer = AIWriter(
-        endpoint=ai_cfg["endpoint"],
-        api_key=ai_cfg["api_key"],
-        model=ai_cfg["model"],
-        max_tokens=ai_cfg["max_tokens"],
-        temperature=ai_cfg["temperature"],
-    )
+    # AI ライター初期化（config.yaml の ai.provider で自動切り替え）
+    writer = create_writer_from_config(ai_cfg)
+    logger.info(f"AIプロバイダー: {ai_cfg.get('provider', 'rakuten')}")
 
     issue_date = datetime.now().strftime("%Y年%m月%d日")
     all_sections_html = []

@@ -4,10 +4,37 @@
 # ============================================================
 
 # --- AI設定 ---
+# provider: 使用するAIサービスを指定します
+#   "rakuten"  → Rakuten AI (社内API)
+#   "gemini"   → Google Gemini (無料枠あり。週1配信なら無料で利用可能)
+#   "openai"   → OpenAI GPT-4o / GPT-4o mini (従量課金)
+#   "claude"   → Anthropic Claude (従量課金)
 ai:
-  endpoint: "https://api-opensource-ai.mde.rakuten-it.com"
-  api_key: "YOUR_API_KEY_HERE"          # 実際のAPIキーに変更してください
-  model: "rakutenai-2.0"
+  provider: "gemini"                    # ← ここを変更してプロバイダーを切り替え
+
+  # Rakuten AI 設定
+  rakuten:
+    endpoint: "https://api-opensource-ai.mde.rakuten-it.com"
+    api_key: "YOUR_RAKUTEN_API_KEY"
+    model: "rakutenai-2.0"
+
+  # Google Gemini 設定（無料枠: gemini-1.5-flash で 100万トークン/日）
+  # APIキー取得: https://aistudio.google.com/app/apikey
+  gemini:
+    api_key: "YOUR_GEMINI_API_KEY"
+    model: "gemini-1.5-flash"           # 無料枠対象モデル
+
+  # OpenAI 設定
+  openai:
+    api_key: "YOUR_OPENAI_API_KEY"
+    model: "gpt-4o-mini"                # 安価なモデル
+
+  # Anthropic Claude 設定
+  claude:
+    api_key: "YOUR_CLAUDE_API_KEY"
+    model: "claude-haiku-4-5-20251001"  # 最もコストが低いモデル
+
+  # 共通設定
   max_tokens: 4096
   temperature: 0.3
 
