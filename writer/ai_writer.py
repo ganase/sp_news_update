@@ -36,7 +36,8 @@ def create_writer_from_config(ai_cfg: dict) -> "AIWriter":
         )
     elif provider == "gemini":
         cfg = ai_cfg["gemini"]
-        # GeminiはOpenAI互換エンドポイントを提供している
+        # Gemini の OpenAI互換エンドポイント
+        # 完全なURLは https://generativelanguage.googleapis.com/v1beta/openai/chat/completions
         return AIWriter(
             provider="gemini",
             endpoint="https://generativelanguage.googleapis.com/v1beta/openai",
@@ -44,6 +45,7 @@ def create_writer_from_config(ai_cfg: dict) -> "AIWriter":
             model=cfg["model"],
             max_tokens=max_tokens,
             temperature=temperature,
+            chat_path="/chat/completions",
         )
     elif provider == "openai":
         cfg = ai_cfg["openai"]
@@ -71,13 +73,14 @@ class AIWriter:
     OpenAI互換API用ライター（Rakuten AI・Gemini・OpenAI 共通）
     """
     def __init__(self, provider: str, endpoint: str, api_key: str, model: str,
-                 max_tokens: int = 4096, temperature: float = 0.3):
+                 max_tokens: int = 4096, temperature: float = 0.3, chat_path: str = "/v1/chat/completions"):
         self.provider = provider
         self.endpoint = endpoint.rstrip("/")
         self.api_key = api_key
         self.model = model
         self.max_tokens = max_tokens
         self.temperature = temperature
+        self.chat_path = chat_path
 
     def generate_domain_section(
         self,
@@ -94,7 +97,7 @@ class AIWriter:
 
         try:
             response = requests.post(
-                f"{self.endpoint}/v1/chat/completions",
+                f"{self.endpoint}{self.chat_path}",
                 headers={
                     "Authorization": f"Bearer {self.api_key}",
                     "Content-Type": "application/json",
