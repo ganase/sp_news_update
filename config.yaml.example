@@ -40,7 +40,7 @@ ai:
 
 # --- メール設定 ---
 mail:
-  smtp_host: "smtp.rakuten.co.jp"       # 実際のSMTPホストに変更してください
+  smtp_host: "YOUR_SMTP_HOST"           # 実際のSMTPホストに変更してください
   smtp_port: 587
   smtp_user: "YOUR_EMAIL@rakuten.com"   # 送信元メールアドレスに変更してください
   smtp_password: "YOUR_SMTP_PASSWORD"   # SMTPパスワードに変更してください
