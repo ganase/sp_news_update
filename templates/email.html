@@ -4,99 +4,120 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{title}}</title>
+  <link rel="icon" href="{{favicon_href}}" type="image/x-icon">
   <style>
     body {
-      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-      background-color: #f5f5f5;
+      font-family: 'Rakuten Sans', 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      background-color: #f2f3f5;
       margin: 0;
       padding: 0;
-      color: #333;
+      color: #232323;
+      line-height: 1.6;
+      -webkit-text-size-adjust: 100%;
     }
     .container {
-      max-width: 700px;
+      max-width: 760px;
       margin: 0 auto;
       background-color: #ffffff;
     }
     .header {
-      background: linear-gradient(135deg, #bf0000 0%, #8b0000 100%);
-      color: white;
-      padding: 24px 32px;
-      text-align: center;
+      background-color: #bf0000;
+      color: #ffffff;
+      padding: 28px 36px 24px;
+      text-align: left;
+      border-bottom: 5px solid #8f0000;
     }
     .header h1 {
-      margin: 0 0 4px 0;
-      font-size: 22px;
-      font-weight: bold;
-      letter-spacing: 1px;
+      margin: 0 0 6px 0;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1.2;
     }
     .header .subtitle {
       margin: 0;
-      font-size: 13px;
-      opacity: 0.85;
+      font-size: 14px;
+      font-weight: 400;
+      opacity: 0.92;
+    }
+    .header .contact {
+      margin: 10px 0 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    .header .contact a {
+      color: #ffffff;
+      text-decoration: underline;
     }
     .header .issue-date {
-      margin-top: 8px;
+      margin: 12px 0 0;
       font-size: 12px;
-      opacity: 0.75;
+      font-weight: 600;
+      opacity: 0.88;
     }
     .content {
-      padding: 24px 32px;
-    }
-    .intro-box {
-      background: #fff8f0;
-      border-left: 4px solid #bf0000;
-      padding: 12px 16px;
-      margin-bottom: 24px;
-      font-size: 14px;
-      color: #555;
+      padding: 28px 36px 32px;
     }
     /* ドメインセクション */
     .domain-section {
-      margin-bottom: 32px;
-      border: 1px solid #e8e8e8;
+      margin: 0 0 28px;
+      border: 1px solid #e7e7e7;
       border-radius: 8px;
       overflow: hidden;
+      background-color: #ffffff;
     }
     .domain-section h2 {
-      background-color: #cc0000;
+      background-color: #dc143c;
       border-bottom: none;
       margin: 0;
-      padding: 14px 20px;
-      font-size: 17px;
-      font-weight: bold;
+      padding: 16px 20px;
+      font-size: 18px;
+      font-weight: 700;
       color: #ffffff;
-      letter-spacing: 1px;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      letter-spacing: 0;
+    }
+    .domain-section.domain-ai_data h2 {
+      background-color: #2454a6;
+    }
+    .domain-section.domain-helpdesk h2 {
+      background-color: #147a5c;
+    }
+    .domain-section.domain-security h2 {
+      background-color: #dc143c;
     }
     .summary-intro {
       padding: 12px 20px 0;
       font-size: 13px;
-      color: #666;
+      color: #646464;
       margin: 0;
     }
     /* ニュースアイテム */
     .news-item {
-      padding: 16px 20px;
-      border-bottom: 1px solid #f0f0f0;
+      padding: 18px 20px;
+      border-bottom: 1px solid #e7e7e7;
     }
     .news-item:last-of-type {
       border-bottom: none;
     }
     .news-item h3 {
-      margin: 0 0 6px 0;
-      font-size: 15px;
-      color: #1a1a1a;
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: #232323;
+      line-height: 1.45;
     }
     .news-item p {
       margin: 6px 0;
       font-size: 13px;
       line-height: 1.65;
-      color: #444;
+      color: #3f3f3f;
     }
     .news-item a {
       font-size: 12px;
-      color: #bf0000;
+      color: #9f0000;
       text-decoration: none;
+      font-weight: 600;
     }
     .news-item a:hover {
       text-decoration: underline;
@@ -104,15 +125,15 @@
     /* バッジ */
     .priority-badge, .category-badge {
       display: inline-block;
-      padding: 2px 8px;
-      border-radius: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
       font-size: 11px;
-      font-weight: bold;
-      margin-bottom: 6px;
+      font-weight: 700;
+      margin-bottom: 8px;
     }
     .priority-high, .priority-badge[data-level="高"] {
-      background-color: #ffe0e0;
-      color: #c00;
+      background-color: #fbe7e7;
+      color: #8f0000;
     }
     .priority-medium, .priority-badge[data-level="中"] {
       background-color: #fff3cd;
@@ -123,32 +144,32 @@
       color: #155724;
     }
     .category-badge {
-      background-color: #e8f0fe;
-      color: #1a56db;
+      background-color: #edf2f7;
+      color: #2d4f73;
     }
     /* 高優先度 */
     .news-item.priority-high {
-      background-color: #fffafa;
-      border-left: 3px solid #cc0000;
+      background-color: #fff7f7;
+      border-left: 4px solid #bf0000;
     }
     /* アクション・示唆 */
     .action, .business-impact, .takeaway {
-      background-color: #f0f7ff;
+      background-color: #f5f8fb;
       border-radius: 4px;
       padding: 8px 12px;
       font-size: 13px;
-      color: #333;
+      color: #232323;
     }
     /* 週のポイント */
     .week-summary {
-      background-color: #fafafa;
-      border-top: 1px solid #eee;
+      background-color: #f7f7f7;
+      border-top: 1px solid #e7e7e7;
       padding: 14px 20px;
     }
     .week-summary h3 {
       margin: 0 0 8px 0;
       font-size: 14px;
-      color: #555;
+      color: #232323;
     }
     .week-summary ul {
       margin: 0;
@@ -156,23 +177,23 @@
     }
     .week-summary li {
       font-size: 13px;
-      color: #444;
+      color: #3f3f3f;
       margin-bottom: 4px;
       line-height: 1.5;
     }
     /* その他のニュース（リスト表示） */
     .other-news {
       padding: 14px 20px 16px;
-      background-color: #fafafa;
-      border-top: 1px solid #f0f0f0;
+      background-color: #f7f7f7;
+      border-top: 1px solid #e7e7e7;
     }
     .other-news-title {
       margin: 0 0 8px 0;
       font-size: 13px;
-      font-weight: bold;
-      color: #666;
+      font-weight: 700;
+      color: #232323;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0;
     }
     .other-news-list {
       margin: 0;
@@ -180,36 +201,54 @@
     }
     .other-news-list li {
       font-size: 13px;
-      color: #444;
+      color: #3f3f3f;
       margin-bottom: 4px;
       line-height: 1.5;
     }
     .other-news-list li a {
       font-size: 13px;
-      color: #333;
+      color: #232323;
       text-decoration: none;
     }
     .other-news-list li a:hover {
-      color: #bf0000;
+      color: #9f0000;
       text-decoration: underline;
     }
     /* フッター */
     .footer {
-      background-color: #f0f0f0;
+      background-color: #eeeeee;
       padding: 20px 32px;
       text-align: center;
       font-size: 11px;
-      color: #888;
-      border-top: 1px solid #ddd;
+      color: #666;
+      border-top: 1px solid #d8d8d8;
     }
     .footer a {
-      color: #888;
+      color: #9f0000;
     }
     .no-articles {
       padding: 20px;
-      color: #999;
+      color: #646464;
       font-size: 13px;
       text-align: center;
+    }
+    @media (max-width: 640px) {
+      .header {
+        padding: 24px 20px 20px;
+      }
+      .header h1 {
+        font-size: 24px;
+      }
+      .content {
+        padding: 22px 16px 26px;
+      }
+      .domain-section h2,
+      .news-item,
+      .other-news,
+      .week-summary {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
     }
   </style>
 </head>
@@ -217,16 +256,12 @@
   <div class="container">
     <div class="header">
       <h1>SP News Update</h1>
-      <p class="subtitle">専門領域の最新動向を、わかりやすくお届けします</p>
+      <p class="subtitle">専門領域の一週間分の最新動向をお届けします。</p>
+      <p class="contact">お問い合わせはこちら: <a class="contact-link" href="mailto:l-munehiko.a.nagase@rakuten.com">l-munehiko.a.nagase@rakuten.com</a></p>
       <p class="issue-date">{{issue_date}} 号</p>
     </div>
 
     <div class="content">
-      <div class="intro-box">
-        このメールはSP News Updateシステムによって自動配信されています。
-        各記事の詳細は元記事リンクからご確認ください。
-      </div>
-
       {{domain_sections}}
 
     </div>

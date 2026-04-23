@@ -7,6 +7,7 @@ SP News Update - メインエントリーポイント
 """
 import argparse
 import logging
+import re
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -100,11 +101,12 @@ def run(dry_run: bool = False):
                 all_articles.extend(articles)
 
         logger.info(f"[{domain_name}] 合計 {len(all_articles)} 件の記事を収集")
+        log_collected_articles(domain_name, all_articles)
 
         if not all_articles:
             logger.warning(f"[{domain_name}] 記事が取得できませんでした。このドメインはスキップします。")
             all_sections_html.append(
-                f'<div class="domain-section"><h2>{domain_name}</h2>'
+                f'<div class="domain-section domain-{domain["id"]}"><h2>{domain_name}</h2>'
                 f'<p class="no-articles">今週は収集できた記事がありませんでした。</p></div>'
             )
             continue
@@ -124,12 +126,14 @@ def run(dry_run: bool = False):
         )
 
         if section_html:
+            section_html = add_domain_class(section_html, domain["id"])
             all_sections_html.append(section_html)
+            logger.info(f"[{domain_name}] 掲載リンク数: {count_links(section_html)} 件")
             logger.info(f"[{domain_name}] HTML生成完了")
         else:
             logger.error(f"[{domain_name}] HTML生成失敗")
             all_sections_html.append(
-                f'<div class="domain-section"><h2>{domain_name}</h2>'
+                f'<div class="domain-section domain-{domain["id"]}"><h2>{domain_name}</h2>'
                 f'<p class="no-articles">記事の生成に失敗しました。</p></div>'
             )
 
@@ -179,6 +183,43 @@ def run(dry_run: bool = False):
         sys.exit(1)
 
     logger.info("SP News Update 正常終了")
+
+
+def log_collected_articles(domain_name: str, articles: list[dict]):
+    for idx, article in enumerate(articles, 1):
+        logger.info(
+            "[%s] 収集記事 %02d: %s | %s",
+            domain_name,
+            idx,
+            article.get("source", ""),
+            article.get("title", ""),
+        )
+
+
+def count_links(html: str) -> int:
+    return len(re.findall(r"<a\s+[^>]*href=", html, flags=re.IGNORECASE))
+
+
+def add_domain_class(html: str, domain_id: str) -> str:
+    class_name = f"domain-{domain_id}"
+
+    def replace_class(match):
+        classes = match.group(1)
+        if class_name in classes.split():
+            return match.group(0)
+        return f'class="{classes} {class_name}"'
+
+    updated = re.sub(r'class="([^"]*\bdomain-section\b[^"]*)"', replace_class, html, count=1)
+    if updated != html:
+        return updated
+
+    return re.sub(
+        r"<(section|div)\b",
+        rf'<\1 class="domain-section {class_name}"',
+        html,
+        count=1,
+        flags=re.IGNORECASE,
+    )
 
 
 if __name__ == "__main__":

@@ -35,7 +35,7 @@ ai:
     model: "claude-haiku-4-5-20251001"  # 最もコストが低いモデル
 
   # 共通設定
-  max_tokens: 4096
+  max_tokens: 12000
   temperature: 0.3
 
 # --- メール設定 ---
@@ -88,6 +88,15 @@ domains:
     active: true
     prompt_file: "ai_data.yaml"
     sources:
+      - name: "OpenAI News"
+        url: "https://openai.com/news/rss.xml"
+        type: "rss"
+      - name: "OpenAI Product Updates Search"
+        url: "https://news.google.com/rss/search?q=OpenAI%20OR%20ChatGPT%20%28launch%20OR%20announces%20OR%20released%20OR%20Images%20OR%20image%20OR%20model%29&hl=ja&gl=JP&ceid=JP:ja"
+        type: "rss"
+      - name: "OpenAI X/SNS Mentions Search"
+        url: "https://news.google.com/rss/search?q=OpenAI%20%28X%20OR%20Twitter%20OR%20livestream%20OR%20teaser%20OR%20posted%29&hl=ja&gl=JP&ceid=JP:ja"
+        type: "rss"
       - name: "MIT Technology Review AI"
         url: "https://www.technologyreview.com/feed/"
         type: "rss"
@@ -97,7 +106,7 @@ domains:
       - name: "Google AI Blog"
         url: "https://blog.research.google/feeds/posts/default"
         type: "rss"
-      - name: "OpenAI Blog"
+      - name: "OpenAI Blog Legacy"
         url: "https://openai.com/blog/rss.xml"
         type: "rss"
 
@@ -106,12 +115,15 @@ domains:
     active: true
     prompt_file: "helpdesk.yaml"
     sources:
-      - name: "ServiceNow Blog"
-        url: "https://www.servicenow.com/blogs.rss"
+      - name: "Windows IT Pro Blog"
+        url: "https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/Category?category.id=Windows"
         type: "rss"
-      - name: "HDI Japan"
-        url: "https://hdijapan.org/feed/"
+      - name: "Windows Experience Blog"
+        url: "https://blogs.windows.com/windowsexperience/feed/"
         type: "rss"
-      - name: "ITmedia エンタープライズ"
-        url: "https://rss.itmedia.co.jp/rss/2.0/itmediaenterprise.xml"
+      - name: "Google Chrome Releases"
+        url: "https://chromereleases.googleblog.com/feeds/posts/default"
+        type: "rss"
+      - name: "ITmedia PC USER"
+        url: "https://rss.itmedia.co.jp/rss/2.0/pcuser.xml"
         type: "rss"

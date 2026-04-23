@@ -4,6 +4,11 @@ config.yaml
 # ログ・プレビュー出力
 logs/
 
+# ローカル作業用・バックアップ
+.claude/
+*.bak
+*.bak_*
+
 # Python
 __pycache__/
 *.py[cod]
@@ -20,3 +25,4 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+desktop.ini

@@ -10,6 +10,7 @@ AI記事生成モジュール
 config.yaml の ai.provider で切り替えます。
 """
 import logging
+import re
 from typing import Optional
 import requests
 
@@ -112,7 +113,7 @@ class AIWriter:
             )
             response.raise_for_status()
             data = response.json()
-            content = data["choices"][0]["message"]["content"].strip()
+            content = _normalize_domain_section_html(data["choices"][0]["message"]["content"])
             logger.info(f"[{self.provider}] AI生成完了 (tokens: {data.get('usage', {}).get('total_tokens', '?')})")
             return content
 
@@ -168,7 +169,7 @@ class ClaudeWriter:
             )
             response.raise_for_status()
             data = response.json()
-            content = data["content"][0]["text"].strip()
+            content = _normalize_domain_section_html(data["content"][0]["text"])
             logger.info(f"[claude] AI生成完了 (tokens: {data.get('usage', {}).get('output_tokens', '?')})")
             return content
 
@@ -196,3 +197,17 @@ def _format_articles(articles: list[dict]) -> str:
             lines.append(f"  概要: {a.get('summary', '')}")
         lines.append("")
     return "\n".join(lines)
+
+
+def _normalize_domain_section_html(html: str) -> str:
+    """AI output can omit a closing section, which makes following domains nest."""
+    html = html.strip()
+    html = re.sub(r"^```(?:html)?\s*", "", html, flags=re.IGNORECASE)
+    html = re.sub(r"\s*```$", "", html)
+
+    section_open_count = len(re.findall(r"<section\b", html, flags=re.IGNORECASE))
+    section_close_count = len(re.findall(r"</section\s*>", html, flags=re.IGNORECASE))
+    if section_open_count > section_close_count:
+        html += "\n" + ("\n".join("</section>" for _ in range(section_open_count - section_close_count)))
+
+    return html
